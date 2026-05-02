@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { buildSiteMetadata, getSiteName } from "@/lib/site";
 
-const siteName = process.env.SITE_NAME?.trim() || "SSM.exe";
+const siteName = getSiteName();
 
-export const metadata: Metadata = {
-  title: `${siteName} - Levelling Up Your Social Presence`,
-  description:
-    "High-impact social media marketing platform for fast, automated social growth.",
-};
+export const metadata: Metadata = buildSiteMetadata(siteName);
 
 export default function RootLayout({
   children,

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&family=Space+Grotesk:wght@400;600;700;900&family=Work+Sans:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;900&family=Work+Sans:wght@400;600&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -62,22 +62,9 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
-.material-symbols-outlined {
-  direction: ltr;
+.lucide-icon {
   display: inline-block;
-  font-family: "Material Symbols Outlined";
-  font-feature-settings: "liga";
-  font-size: 24px;
-  font-style: normal;
-  font-variation-settings: "FILL" 1, "wght" 600, "GRAD" 0, "opsz" 24;
-  font-weight: normal;
-  letter-spacing: 0;
-  line-height: 1;
-  text-transform: none;
-  white-space: nowrap;
-  word-wrap: normal;
-  -webkit-font-feature-settings: "liga";
-  -webkit-font-smoothing: antialiased;
+  flex-shrink: 0;
 }
 
 .neo-border {
@@ -94,7 +81,11 @@ button {
 }
 
 .dot-pattern {
-  background-image: radial-gradient(circle at 2px 2px, #181c20 1px, transparent 0);
+  background-image: radial-gradient(
+    circle at 2px 2px,
+    #181c20 1px,
+    transparent 0
+  );
   background-size: 20px 20px;
 }
 

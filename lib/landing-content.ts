@@ -1,0 +1,76 @@
+import type {
+  FaqItem,
+  FooterLink,
+  NavItem,
+  PaymentMethod,
+  StatItem,
+} from "@/types/landing";
+
+export const heroImageUrl =
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuDl742lQapuYzMkwkJJgq2rdj2cQ78jz_ZHE6AQdRg_ZKmKU2vg-RwfJVmfuXZ7wznfEf9oZ63loN8VXQUzt1FxcYSdg4p_yyEo9co7Z8p9ce_0npVuT9_fiPRQ0NU3V1Vvaluu5awhn5Obob-XeALgHmaSM8i7Jab9frOmiFfDTIJnIcCO-kVJxYIg1L0oxWbJOWkNXpOMiSzFz-YXtiFNKTwU30_0fXOT7an9siekuBYJMaRlgn8dsTQXRu9Zf6ad-WotdCJqHrQ";
+
+export const navItems: NavItem[] = [
+  { label: "Services", href: "#services", isActive: true },
+  { label: "Pricing", href: "#pricing" },
+  { label: "Contact", href: "#contact" },
+  { label: "Dashboard", href: "/dashboard" },
+];
+
+export const stats: StatItem[] = [
+  { icon: "shopping-cart", value: "10K+", label: "Total Orders" },
+  { icon: "users", value: "5K+", label: "Happy Users", isFeatured: true },
+  { icon: "globe", value: "99.9%", label: "Uptime Server" },
+];
+
+export const paymentMethods: PaymentMethod[] = [
+  { icon: "qr-code", label: "QRIS" },
+  {
+    icon: "wallet",
+    label: "E-Wallet (OVO/DANA)",
+    isFeatured: true,
+  },
+  { icon: "landmark", label: "BCA Transfer" },
+  { icon: "banknote", label: "BRI Transfer" },
+];
+
+export const footerLinks: FooterLink[] = [
+  { label: "Privacy Policy", href: "#", isPrimary: true },
+  { label: "Terms of Service", href: "#" },
+  { label: "API Docs", href: "#" },
+  { label: "Support", href: "#" },
+];
+
+export function buildFaqItems(siteName: string): FaqItem[] {
+  return [
+    {
+      question: `Apa keuntungan bergabung/mendaftar di ${siteName}?`,
+      answer:
+        "Dapatkan akses ke panel SMM terbaik dengan harga termurah, proses otomatis, dan dukungan penuh 24/7 untuk meningkatkan presensi digital Anda dengan cepat.",
+    },
+    {
+      question: `Apa itu ${siteName}?`,
+      answer: `${siteName} adalah platform Social Media Marketing (SMM) nomor 1 yang menyediakan berbagai layanan untuk meningkatkan interaksi dan pengikut di berbagai platform media sosial secara efektif.`,
+      isFeatured: true,
+    },
+    {
+      question: `Bagaimana cara bergabung/mendaftar di ${siteName}?`,
+      answer:
+        "Cukup klik tombol SIGN UP di menu navigasi, isi formulir pendaftaran, dan verifikasi akun Anda untuk mulai menggunakan layanan kami.",
+    },
+    {
+      question: `Apa layanan di ${siteName} otomatis?`,
+      answer:
+        "Ya, semua layanan kami terintegrasi dengan sistem API otomatis yang memproses pesanan Anda dalam hitungan detik tanpa perlu menunggu manual.",
+    },
+    {
+      question: `Apakah layanan di ${siteName} bergaransi?`,
+      answer:
+        "Kami menyediakan berbagai kategori layanan, termasuk layanan dengan garansi refill jika terjadi penurunan jumlah sesuai dengan deskripsi masing-masing layanan.",
+    },
+    {
+      question: "Bagaimana jika saya ada kendala?",
+      answer:
+        "Anda dapat menghubungi tim dukungan pelanggan kami melalui fitur tiket di dashboard atau melalui WhatsApp yang tersedia 24 jam sehari.",
+    },
+  ];
+}

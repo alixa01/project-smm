@@ -10,19 +10,15 @@ type PaymentMethodCardProps = {
 };
 
 export default function PaymentMethodCard({ method }: PaymentMethodCardProps) {
-  const isFeatured = method.isFeatured === true;
-
   return (
     <motion.article
-      className={`neo-border neo-shadow flex min-h-40 flex-col items-center justify-center space-y-3 p-5 text-center ${
-        isFeatured
-          ? "bg-secondary-container text-on-secondary-container"
-          : "bg-white text-black"
-      }`}
+      className="neo-border neo-shadow-sm flex items-center gap-3 bg-white px-4 py-3 text-black transition-shadow duration-200 hover:shadow-[6px_6px_0_0_#181c20] sm:gap-4 sm:px-5 sm:py-4"
       variants={revealVariants}
-      whileHover={{ y: -4 }}>
-      <LucideIcon name={method.icon} className="text-5xl" />
-      <span className="font-headline text-base font-bold uppercase sm:text-lg">
+      whileHover={{ y: -2 }}>
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center border-[3px] border-black bg-background">
+        <LucideIcon name={method.icon} className="text-xl text-black" />
+      </span>
+      <span className="font-headline text-sm font-bold tracking-wide text-black sm:text-base">
         {method.label}
       </span>
     </motion.article>

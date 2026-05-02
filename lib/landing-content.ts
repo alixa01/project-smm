@@ -6,29 +6,28 @@ import type {
   StatItem,
 } from "@/types/landing";
 
-export const heroImageUrl =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuDl742lQapuYzMkwkJJgq2rdj2cQ78jz_ZHE6AQdRg_ZKmKU2vg-RwfJVmfuXZ7wznfEf9oZ63loN8VXQUzt1FxcYSdg4p_yyEo9co7Z8p9ce_0npVuT9_fiPRQ0NU3V1Vvaluu5awhn5Obob-XeALgHmaSM8i7Jab9frOmiFfDTIJnIcCO-kVJxYIg1L0oxWbJOWkNXpOMiSzFz-YXtiFNKTwU30_0fXOT7an9siekuBYJMaRlgn8dsTQXRu9Zf6ad-WotdCJqHrQ";
-
 export const navItems: NavItem[] = [
-  { label: "Services", href: "#services", isActive: true },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Contact", href: "#contact" },
+  { label: "Services", href: "/services" },
+  { label: "Contact", href: "/#contact" },
   { label: "Dashboard", href: "/dashboard" },
 ];
 
+export function buildNavItems(activePath: string): NavItem[] {
+  return navItems.map((item) => ({
+    ...item,
+    isActive: item.href === activePath,
+  }));
+}
+
 export const stats: StatItem[] = [
-  { icon: "shopping-cart", value: "10K+", label: "Total Orders" },
-  { icon: "users", value: "5K+", label: "Happy Users", isFeatured: true },
-  { icon: "globe", value: "99.9%", label: "Uptime Server" },
+  { icon: "shopping-cart", value: "10K+", label: "Orders fulfilled" },
+  { icon: "users", value: "5K+", label: "Active operators" },
+  { icon: "globe", value: "99.9%", label: "API uptime" },
 ];
 
 export const paymentMethods: PaymentMethod[] = [
   { icon: "qr-code", label: "QRIS" },
-  {
-    icon: "wallet",
-    label: "E-Wallet (OVO/DANA)",
-    isFeatured: true,
-  },
+  { icon: "wallet", label: "E-Wallet" },
   { icon: "landmark", label: "BCA Transfer" },
   { icon: "banknote", label: "BRI Transfer" },
 ];
@@ -50,7 +49,6 @@ export function buildFaqItems(siteName: string): FaqItem[] {
     {
       question: `Apa itu ${siteName}?`,
       answer: `${siteName} adalah platform Social Media Marketing (SMM) nomor 1 yang menyediakan berbagai layanan untuk meningkatkan interaksi dan pengikut di berbagai platform media sosial secara efektif.`,
-      isFeatured: true,
     },
     {
       question: `Bagaimana cara bergabung/mendaftar di ${siteName}?`,

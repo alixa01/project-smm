@@ -17,7 +17,7 @@ export default function SiteHeader({ siteName, items }: SiteHeaderProps) {
       transition={{ duration: 0.5, ease: "easeOut" }}>
       <a
         className="font-headline max-w-[52vw] truncate text-xl font-black uppercase text-black sm:max-w-none sm:text-2xl"
-        href="#top">
+        href="/">
         {siteName}
       </a>
 
@@ -39,12 +39,12 @@ export default function SiteHeader({ siteName, items }: SiteHeaderProps) {
       <div className="flex items-center gap-2 sm:gap-4">
         <a
           className="font-headline hidden border-[3px] border-transparent px-4 py-2 font-bold uppercase text-black transition-colors duration-100 hover:border-black hover:bg-primary-container hover:text-white sm:block"
-          href="#login">
+          href="/login">
           Login
         </a>
         <motion.a
           className="neo-border neo-shadow font-headline bg-primary-container px-3 py-2 font-bold uppercase text-white sm:px-4"
-          href="#signup"
+          href="/register"
           whileHover={{ x: 3, y: 3, boxShadow: "3px 3px 0 0 #181c20" }}
           whileTap={{ x: 6, y: 6, boxShadow: "0px 0px 0 0 #181c20" }}>
           Sign Up

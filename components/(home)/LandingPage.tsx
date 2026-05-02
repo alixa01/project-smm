@@ -15,7 +15,7 @@ export default function LandingPage({ siteName }: LandingPageProps) {
   return (
     <MotionConfig reducedMotion="user">
       <HeroSection siteName={siteName} />
-      <div className="mx-auto max-w-7xl space-y-20 px-4 pb-20 pt-10 sm:px-6 lg:space-y-24">
+      <div className="mx-auto max-w-6xl space-y-24 px-4 pb-24 sm:px-6 sm:space-y-32 lg:space-y-40 lg:pb-32">
         <StatsSection />
         <FaqSection siteName={siteName} />
         <PaymentMethodsSection />

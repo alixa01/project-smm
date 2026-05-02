@@ -16,6 +16,8 @@
   --on-primary-container: #003e17;
   --secondary-container: #aff3b5;
   --on-secondary-container: #327140;
+  --error-container: #ffdad6;
+  --on-error-container: #93000a;
   --accent: #f2c94c;
 }
 
@@ -34,6 +36,8 @@
   --color-on-primary-container: var(--on-primary-container);
   --color-secondary-container: var(--secondary-container);
   --color-on-secondary-container: var(--on-secondary-container);
+  --color-error-container: var(--error-container);
+  --color-on-error-container: var(--on-error-container);
   --color-accent: var(--accent);
   --font-headline: "Space Grotesk", "Arial Black", sans-serif;
   --font-sans: "Work Sans", Arial, sans-serif;
@@ -75,6 +79,10 @@ button {
   box-shadow: 6px 6px 0 0 #181c20;
 }
 
+.neo-shadow-sm {
+  box-shadow: 3px 3px 0 0 #181c20;
+}
+
 .text-stroke {
   -webkit-text-stroke: 2px #181c20;
   paint-order: stroke fill;
@@ -92,6 +100,10 @@ button {
 @media (max-width: 640px) {
   .neo-shadow {
     box-shadow: 4px 4px 0 0 #181c20;
+  }
+
+  .neo-shadow-sm {
+    box-shadow: 2px 2px 0 0 #181c20;
   }
 
   .text-stroke {

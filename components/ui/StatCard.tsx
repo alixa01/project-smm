@@ -10,25 +10,27 @@ type StatCardProps = {
 };
 
 export default function StatCard({ stat }: StatCardProps) {
-  const isFeatured = stat.isFeatured === true;
-
   return (
     <motion.article
-      className={`neo-border neo-shadow flex flex-col items-center justify-center space-y-4 p-8 text-center ${
-        isFeatured ? "bg-primary-container text-white" : "bg-white"
-      }`}
+      className="neo-border neo-shadow-sm relative flex flex-col items-start overflow-hidden bg-white p-8 transition-shadow duration-200 hover:shadow-[6px_6px_0_0_#181c20]"
       variants={revealVariants}
-      whileHover={{ y: -4, rotate: isFeatured ? -1 : 1 }}>
+      whileHover={{ y: -4 }}>
       <LucideIcon
         name={stat.icon}
-        className={`text-5xl ${
-          isFeatured ? "text-white" : "text-primary-container"
-        }`}
+        aria-hidden="true"
+        className="pointer-events-none absolute right-5 top-5 text-3xl text-on-surface-variant opacity-20"
       />
-      <h2 className="font-headline text-5xl font-black uppercase">
+
+      <p className="font-headline text-5xl font-black leading-none tracking-tight text-black sm:text-6xl">
         {stat.value}
-      </h2>
-      <p className="font-headline text-lg font-bold uppercase text-inherit">
+      </p>
+
+      <div
+        aria-hidden="true"
+        className="mt-5 h-[3px] w-12 bg-primary-container"
+      />
+
+      <p className="mt-4 text-sm font-medium text-on-surface-variant sm:text-base">
         {stat.label}
       </p>
     </motion.article>

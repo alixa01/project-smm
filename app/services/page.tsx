@@ -1,18 +1,18 @@
-import LandingPage from "@/components/(home)/LandingPage";
+import ServicesPage from "@/components/(services)/ServicesPage";
 import MainLayout from "@/components/layouts/MainLayout";
 import { buildNavItems, footerLinks } from "@/lib/landing-content";
 import { getSiteName } from "@/lib/site";
 
-export default function Home() {
+export default function Services() {
   const siteName = getSiteName();
-  const navItems = buildNavItems("/");
+  const navItems = buildNavItems("/services");
 
   return (
     <MainLayout
       siteName={siteName}
       navItems={navItems}
       footerLinks={footerLinks}>
-      <LandingPage siteName={siteName} />
+      <ServicesPage />
     </MainLayout>
   );
 }

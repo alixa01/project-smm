@@ -18,31 +18,30 @@ export default function FaqAccordionItem({
   isOpen,
   onToggle,
 }: FaqAccordionItemProps) {
-  const isFeatured = item.isFeatured === true;
   const panelId = `faq-panel-${index}`;
 
   return (
     <motion.div
-      className={`neo-border neo-shadow overflow-hidden ${
-        isFeatured ? "bg-primary-container" : "bg-white"
+      className={`neo-border overflow-hidden bg-white transition-shadow duration-200 ${
+        isOpen ? "neo-shadow" : "neo-shadow-sm"
       }`}
       variants={revealVariants}>
       <button
         aria-controls={panelId}
         aria-expanded={isOpen}
-        className="flex w-full items-center justify-between gap-4 p-6 text-left"
+        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left sm:px-6 sm:py-5"
         onClick={() => onToggle(index)}
         type="button">
-        <span
-          className={`font-headline text-lg font-bold uppercase sm:text-xl ${
-            isFeatured ? "text-white" : "text-black"
-          }`}>
-          {index + 1}. {item.question}
+        <span className="font-headline text-base font-bold leading-snug text-black sm:text-lg">
+          {item.question}
         </span>
         <motion.span
           animate={{ rotate: isOpen ? 180 : 0 }}
-          className={isFeatured ? "text-white" : "text-black"}>
-          <LucideIcon name="chevron-down" className="text-3xl" />
+          transition={{ duration: 0.22, ease: "easeOut" }}
+          className={`flex h-9 w-9 shrink-0 items-center justify-center border-[3px] border-black transition-colors ${
+            isOpen ? "bg-primary-container text-white" : "bg-white text-black"
+          }`}>
+          <LucideIcon name="chevron-down" className="text-xl" />
         </motion.span>
       </button>
 
@@ -50,12 +49,12 @@ export default function FaqAccordionItem({
         {isOpen ? (
           <motion.div
             animate={{ height: "auto", opacity: 1 }}
-            className="border-t-[3px] border-black bg-surface-container-low"
+            className="border-t-[3px] border-black"
             exit={{ height: 0, opacity: 0 }}
             id={panelId}
             initial={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}>
-            <p className="px-6 py-5 leading-7 text-on-surface-variant">
+            transition={{ duration: 0.22, ease: "easeOut" }}>
+            <p className="px-5 py-4 text-base leading-7 text-on-surface-variant sm:px-6 sm:py-5">
               {item.answer}
             </p>
           </motion.div>

@@ -1,10 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import LucideIcon from "@/components/ui/LucideIcon";
 import NeoCheckbox from "@/components/ui/NeoCheckbox";
 import NeoInput from "@/components/ui/NeoInput";
+import { signIn } from "@/lib/auth-client";
 import { containerVariants, revealVariants } from "@/lib/motion";
 import type { LoginFormContent } from "@/types/auth";
 
@@ -14,16 +16,32 @@ type LoginFormProps = {
 };
 
 export default function LoginForm({ siteName, content }: LoginFormProps) {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Placeholder: wire up to your auth backend.
-    // eslint-disable-next-line no-console
-    console.log("[login] submit", { email, remember });
+    if (submitting) return;
+    setError(null);
+    setSubmitting(true);
+    const { error: signInError } = await signIn.email({
+      email,
+      password,
+      rememberMe: remember,
+      callbackURL: "/",
+    });
+    if (signInError) {
+      setError(signInError.message ?? "Login gagal. Periksa email & password.");
+      setSubmitting(false);
+      return;
+    }
+    router.push("/");
+    router.refresh();
   };
 
   return (
@@ -33,9 +51,7 @@ export default function LoginForm({ siteName, content }: LoginFormProps) {
       animate="show"
       variants={containerVariants}>
       <div className="w-full max-w-md space-y-8">
-        <motion.div
-          className="text-center md:hidden"
-          variants={revealVariants}>
+        <motion.div className="text-center md:hidden" variants={revealVariants}>
           <a
             href="/"
             className="font-headline text-2xl font-black uppercase italic tracking-tighter text-black">
@@ -114,12 +130,29 @@ export default function LoginForm({ siteName, content }: LoginFormProps) {
               />
             </div>
 
+            {error ? (
+              <p
+                role="alert"
+                className="neo-border bg-error-container px-4 py-3 text-sm font-semibold text-on-error-container">
+                {error}
+              </p>
+            ) : null}
+
             <motion.button
               type="submit"
-              className="neo-border neo-shadow font-headline mt-2 flex w-full items-center justify-center gap-3 bg-primary-container px-6 py-4 text-xl font-black uppercase text-white sm:text-2xl"
-              whileHover={{ x: 3, y: 3, boxShadow: "3px 3px 0 0 #181c20" }}
-              whileTap={{ x: 6, y: 6, boxShadow: "0px 0px 0 0 #181c20" }}>
-              {content.submitLabel}
+              disabled={submitting}
+              className="neo-border neo-shadow font-headline mt-2 flex w-full items-center justify-center gap-3 bg-primary-container px-6 py-4 text-xl font-black uppercase text-white disabled:cursor-not-allowed disabled:opacity-70 sm:text-2xl"
+              whileHover={
+                submitting
+                  ? undefined
+                  : { x: 3, y: 3, boxShadow: "3px 3px 0 0 #181c20" }
+              }
+              whileTap={
+                submitting
+                  ? undefined
+                  : { x: 6, y: 6, boxShadow: "0px 0px 0 0 #181c20" }
+              }>
+              {submitting ? "Loading..." : content.submitLabel}
               <LucideIcon name="log-in" className="text-2xl" />
             </motion.button>
           </form>

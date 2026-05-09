@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import LucideIcon from "@/components/ui/LucideIcon";
+import { useSession } from "@/lib/auth-client";
 import type { NavItem } from "@/types/landing";
 
 type SiteHeaderProps = {
@@ -9,6 +11,9 @@ type SiteHeaderProps = {
 };
 
 export default function SiteHeader({ siteName, items }: SiteHeaderProps) {
+  const { data: session, isPending } = useSession();
+  const isAuthenticated = Boolean(session?.user);
+
   return (
     <motion.nav
       className="fixed left-0 top-0 z-50 flex h-20 w-full items-center justify-between border-b-[3px] border-black bg-white px-4 shadow-[6px_6px_0_0_#181c20] sm:px-6"
@@ -37,18 +42,38 @@ export default function SiteHeader({ siteName, items }: SiteHeaderProps) {
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4">
-        <a
-          className="font-headline hidden border-[3px] border-transparent px-4 py-2 font-bold uppercase text-black transition-colors duration-100 hover:border-black hover:bg-primary-container hover:text-white sm:block"
-          href="/login">
-          Login
-        </a>
-        <motion.a
-          className="neo-border neo-shadow font-headline bg-primary-container px-3 py-2 font-bold uppercase text-white sm:px-4"
-          href="/register"
-          whileHover={{ x: 3, y: 3, boxShadow: "3px 3px 0 0 #181c20" }}
-          whileTap={{ x: 6, y: 6, boxShadow: "0px 0px 0 0 #181c20" }}>
-          Sign Up
-        </motion.a>
+        {isPending ? (
+          <div
+            aria-hidden="true"
+            className="h-10 w-28 animate-pulse rounded-sm bg-surface-variant sm:w-40"
+          />
+        ) : isAuthenticated ? (
+          <motion.a
+            className="neo-border neo-shadow font-headline flex items-center gap-2 bg-primary-container px-3 py-2 font-bold uppercase text-white sm:px-4"
+            href="/profile"
+            whileHover={{ x: 3, y: 3, boxShadow: "3px 3px 0 0 #181c20" }}
+            whileTap={{ x: 6, y: 6, boxShadow: "0px 0px 0 0 #181c20" }}>
+            <LucideIcon name="user" className="text-lg" />
+            <span className="max-w-[120px] truncate">
+              {session?.user?.name?.split(" ")[0] ?? "Profile"}
+            </span>
+          </motion.a>
+        ) : (
+          <>
+            <a
+              className="font-headline hidden border-[3px] border-transparent px-4 py-2 font-bold uppercase text-black transition-colors duration-100 hover:border-black hover:bg-primary-container hover:text-white sm:block"
+              href="/login">
+              Login
+            </a>
+            <motion.a
+              className="neo-border neo-shadow font-headline bg-primary-container px-3 py-2 font-bold uppercase text-white sm:px-4"
+              href="/register"
+              whileHover={{ x: 3, y: 3, boxShadow: "3px 3px 0 0 #181c20" }}
+              whileTap={{ x: 6, y: 6, boxShadow: "0px 0px 0 0 #181c20" }}>
+              Sign Up
+            </motion.a>
+          </>
+        )}
       </div>
     </motion.nav>
   );

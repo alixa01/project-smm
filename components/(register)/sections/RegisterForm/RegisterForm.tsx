@@ -1,9 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import LucideIcon from "@/components/ui/LucideIcon";
 import NeoInput from "@/components/ui/NeoInput";
+import { signUp } from "@/lib/auth-client";
 import { containerVariants, revealVariants } from "@/lib/motion";
 import type { RegisterFormContent } from "@/types/auth";
 
@@ -13,6 +15,7 @@ type RegisterFormProps = {
 };
 
 export default function RegisterForm({ siteName, content }: RegisterFormProps) {
+  const router = useRouter();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,9 +23,11 @@ export default function RegisterForm({ siteName, content }: RegisterFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (submitting) return;
     if (password.length < 8) {
       setError(content.minLengthError);
       return;
@@ -32,9 +37,19 @@ export default function RegisterForm({ siteName, content }: RegisterFormProps) {
       return;
     }
     setError(null);
-    // Placeholder: wire up to your auth backend.
-    // eslint-disable-next-line no-console
-    console.log("[register] submit", { fullName, email });
+    setSubmitting(true);
+    const { error: signUpError } = await signUp.email({
+      email,
+      password,
+      name: fullName,
+    });
+    if (signUpError) {
+      setError(signUpError.message ?? "Pendaftaran gagal. Coba lagi.");
+      setSubmitting(false);
+      return;
+    }
+    router.push(content.loginHref ?? "/login");
+    router.refresh();
   };
 
   const confirmInvalid =
@@ -75,101 +90,110 @@ export default function RegisterForm({ siteName, content }: RegisterFormProps) {
               onSubmit={handleSubmit}
               className="space-y-4"
               aria-label={content.heading}>
-            <NeoInput
-              name="fullName"
-              type="text"
-              autoComplete="name"
-              required
-              label={content.fullNameLabel}
-              placeholder={content.fullNamePlaceholder}
-              value={fullName}
-              onChange={(event) => setFullName(event.target.value)}
-            />
+              <NeoInput
+                name="fullName"
+                type="text"
+                autoComplete="name"
+                required
+                label={content.fullNameLabel}
+                placeholder={content.fullNamePlaceholder}
+                value={fullName}
+                onChange={(event) => setFullName(event.target.value)}
+              />
 
-            <NeoInput
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              label={content.emailLabel}
-              placeholder={content.emailPlaceholder}
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-            />
+              <NeoInput
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                label={content.emailLabel}
+                placeholder={content.emailPlaceholder}
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+              />
 
-            <NeoInput
-              name="password"
-              type={showPassword ? "text" : "password"}
-              autoComplete="new-password"
-              required
-              minLength={8}
-              label={content.passwordLabel}
-              placeholder={content.passwordPlaceholder}
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              trailing={
-                <button
-                  type="button"
-                  aria-pressed={showPassword}
-                  aria-label={
-                    showPassword
-                      ? content.hidePasswordLabel
-                      : content.showPasswordLabel
-                  }
-                  onClick={() => setShowPassword((prev) => !prev)}
-                  className="flex h-full w-12 items-center justify-center bg-white text-black transition-colors hover:bg-primary-container hover:text-white">
-                  <LucideIcon
-                    name={showPassword ? "eye-off" : "eye"}
-                    className="text-xl"
-                  />
-                </button>
-              }
-            />
+              <NeoInput
+                name="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="new-password"
+                required
+                minLength={8}
+                label={content.passwordLabel}
+                placeholder={content.passwordPlaceholder}
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                trailing={
+                  <button
+                    type="button"
+                    aria-pressed={showPassword}
+                    aria-label={
+                      showPassword
+                        ? content.hidePasswordLabel
+                        : content.showPasswordLabel
+                    }
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="flex h-full w-12 items-center justify-center bg-white text-black transition-colors hover:bg-primary-container hover:text-white">
+                    <LucideIcon
+                      name={showPassword ? "eye-off" : "eye"}
+                      className="text-xl"
+                    />
+                  </button>
+                }
+              />
 
-            <NeoInput
-              name="confirmPassword"
-              type={showConfirm ? "text" : "password"}
-              autoComplete="new-password"
-              required
-              minLength={8}
-              aria-invalid={confirmInvalid || undefined}
-              label={content.confirmPasswordLabel}
-              placeholder={content.confirmPasswordPlaceholder}
-              value={confirmPassword}
-              onChange={(event) => setConfirmPassword(event.target.value)}
-              trailing={
-                <button
-                  type="button"
-                  aria-pressed={showConfirm}
-                  aria-label={
-                    showConfirm
-                      ? content.hidePasswordLabel
-                      : content.showPasswordLabel
-                  }
-                  onClick={() => setShowConfirm((prev) => !prev)}
-                  className="flex h-full w-12 items-center justify-center bg-white text-black transition-colors hover:bg-primary-container hover:text-white">
-                  <LucideIcon
-                    name={showConfirm ? "eye-off" : "eye"}
-                    className="text-xl"
-                  />
-                </button>
-              }
-            />
+              <NeoInput
+                name="confirmPassword"
+                type={showConfirm ? "text" : "password"}
+                autoComplete="new-password"
+                required
+                minLength={8}
+                aria-invalid={confirmInvalid || undefined}
+                label={content.confirmPasswordLabel}
+                placeholder={content.confirmPasswordPlaceholder}
+                value={confirmPassword}
+                onChange={(event) => setConfirmPassword(event.target.value)}
+                trailing={
+                  <button
+                    type="button"
+                    aria-pressed={showConfirm}
+                    aria-label={
+                      showConfirm
+                        ? content.hidePasswordLabel
+                        : content.showPasswordLabel
+                    }
+                    onClick={() => setShowConfirm((prev) => !prev)}
+                    className="flex h-full w-12 items-center justify-center bg-white text-black transition-colors hover:bg-primary-container hover:text-white">
+                    <LucideIcon
+                      name={showConfirm ? "eye-off" : "eye"}
+                      className="text-xl"
+                    />
+                  </button>
+                }
+              />
 
-            {error ? (
-              <p
-                role="alert"
-                className="neo-border bg-error-container px-4 py-3 text-sm font-semibold text-on-error-container">
-                {error}
-              </p>
-            ) : null}
+              {error ? (
+                <p
+                  role="alert"
+                  className="neo-border bg-error-container px-4 py-3 text-sm font-semibold text-on-error-container">
+                  {error}
+                </p>
+              ) : null}
 
               <motion.button
                 type="submit"
-                className="neo-border neo-shadow font-headline mt-1 flex w-full items-center justify-center gap-3 bg-primary-container px-6 py-3 text-lg font-black uppercase text-white sm:text-xl"
-                whileHover={{ x: 3, y: 3, boxShadow: "3px 3px 0 0 #181c20" }}
-                whileTap={{ x: 6, y: 6, boxShadow: "0px 0px 0 0 #181c20" }}>
-                {content.submitLabel}
+                disabled={submitting}
+                className="neo-border neo-shadow font-headline mt-1 flex w-full items-center justify-center gap-3 bg-primary-container px-6 py-3 text-lg font-black uppercase text-white disabled:cursor-not-allowed disabled:opacity-70 sm:text-xl"
+                whileHover={
+                  submitting
+                    ? undefined
+                    : { x: 3, y: 3, boxShadow: "3px 3px 0 0 #181c20" }
+                }
+                whileTap={
+                  submitting
+                    ? undefined
+                    : { x: 6, y: 6, boxShadow: "0px 0px 0 0 #181c20" }
+                }>
+                {submitting ? "Loading..." : content.submitLabel}
                 <LucideIcon name="arrow-right" className="text-xl" />
               </motion.button>
             </form>
